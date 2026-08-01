@@ -1,0 +1,30 @@
+{
+  "setupTasks": [
+    {
+      "name": "Instalar dependencias",
+      "command": "npm install"
+    }
+  ],
+  "tasks": {
+    "dev": {
+      "name": "Servidor de desarrollo",
+      "command": "npm run dev",
+      "runAtStart": true,
+      "preview": {
+        "port": 3000
+      }
+    },
+    "build": {
+      "name": "Compilar para producción",
+      "command": "npm run build"
+    },
+    "pipeline": {
+      "name": "Ejecutar pipeline manual",
+      "command": "npm run pipeline"
+    },
+    "seed": {
+      "name": "Insertar datos demo",
+      "command": "npm run seed"
+    }
+  }
+}
