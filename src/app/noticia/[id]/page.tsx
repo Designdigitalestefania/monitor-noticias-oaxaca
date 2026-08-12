@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/Badge';
 import { formatFecha } from '@/lib/utils/formatters';
 import { SEOHead } from '@/components/shared/SEOHead';
 import { ImageVariants } from '@/components/news/ImageVariants';
-import Loading from '../loading';
 
 async function getNoticia(id: string): Promise<Noticia | null> {
   try {
@@ -38,7 +37,7 @@ export default async function NoticiaPage({ params }: { params: { id: string } }
   const imagenPrincipal = noticia.imagenEditada?.url || noticia.imagen?.url;
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<div style={{padding:'2rem',textAlign:'center',color:'#666'}}>⏳ Cargando...</div>}>
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <SEOHead
           title={`${noticia.titulo} | Monitor Noticias MNO`}

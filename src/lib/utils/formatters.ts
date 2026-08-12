@@ -1,43 +1,36 @@
-export function formatFecha(fecha: Date | string): string {
-  const d = typeof fecha === 'string' ? new Date(fecha) : fecha;
-  return d.toLocaleDateString('es-MX', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+export function formatFecha(fecha: Date | string | any): string {
+  let d: Date;
+  if (fecha instanceof Date) d = fecha;
+  else if (typeof fecha === 'string') d = new Date(fecha);
+  else if (fecha && typeof fecha.toDate === 'function') d = fecha.toDate();
+  else if (fecha && typeof fecha.seconds === 'number') d = new Date(fecha.seconds * 1000);
+  else d = new Date(fecha);
+  if (isNaN(d.getTime())) return 'Fecha no disponible';
+  return d.toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-export function formatFechaCorta(fecha: Date | string): string {
-  const d = typeof fecha === 'string' ? new Date(fecha) : fecha;
-  return d.toLocaleDateString('es-MX', {
-    day: 'numeric',
-    month: 'short',
-  });
+export function formatTiempoRelativo(fecha: Date | string | any): string {
+  let d: Date;
+  if (fecha instanceof Date) d = fecha;
+  else if (typeof fecha === 'string') d = new Date(fecha);
+  else if (fecha && typeof fecha.toDate === 'function') d = fecha.toDate();
+  else if (fecha && typeof fecha.seconds === 'number') d = new Date(fecha.seconds * 1000);
+  else d = new Date(fecha);
+  if (isNaN(d.getTime())) return 'Hace un momento';
+  const diffSeg = Math.floor((Date.now() - d.getTime()) / 1000);
+  if (diffSeg < 60) return 'Hace un momento';
+  if (diffSeg < 3600) return 'Hace ' + Math.floor(diffSeg / 60) + ' min';
+  if (diffSeg < 86400) return 'Hace ' + Math.floor(diffSeg / 3600) + ' h';
+  if (diffSeg < 172800) return 'Ayer';
+  return 'Hace ' + Math.floor(diffSeg / 86400) + ' dias';
 }
 
-export function formatTiempoRelativo(fecha: Date | string): string {
-  const d = typeof fecha === 'string' ? new Date(fecha) : fecha;
-  const ahora = new Date();
-  const diffMs = ahora.getTime() - d.getTime();
-  const diffMin = Math.floor(diffMs / 60000);
-  const diffHoras = Math.floor(diffMin / 60);
-  const diffDias = Math.floor(diffHoras / 24);
-
-  if (diffMin < 1) return 'Hace un momento';
-  if (diffMin < 60) return `Hace ${diffMin} min`;
-  if (diffHoras < 24) return `Hace ${diffHoras} h`;
-  if (diffDias === 1) return 'Ayer';
-  return `Hace ${diffDias} días`;
+export function capitalize(str: string): string {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-export function formatNumero(num: number): string {
-  if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-  if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-  return num.toString();
-}
-
-export function capitalize(text: string): string {
-  return text.charAt(0).toUpperCase() + text.slice(1);
+export function truncate(str: string, maxLength: number): string {
+  if (!str || str.length <= maxLength) return str;
+  return str.slice(0, maxLength) + '...';
 }

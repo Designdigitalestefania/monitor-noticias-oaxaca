@@ -34,14 +34,14 @@ export default async function HomePage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 space-y-12">
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<div style={{padding:'2rem',textAlign:'center',color:'#666'}}>⏳ Cargando...</div>}>
           <section>
             <SectionTitle title="Destacadas" subtitle="Las noticias más relevantes del momento" />
             <FeaturedNews noticias={destacadas} />
           </section>
         </Suspense>
 
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<div style={{padding:'2rem',textAlign:'center',color:'#666'}}>⏳ Cargando...</div>}>
           <section>
             <SectionTitle title="Más noticias" />
             <NewsList noticias={recientes} columns={3} />
